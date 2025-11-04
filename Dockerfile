@@ -16,12 +16,12 @@ COPY src/elara-essentials /tmp/elara-essentials
 
 RUN VERSION_PART=${FULL_VERSION%%_amd64} && \
     # Update the Version field in the control file
-    sed -i "s/^Version:.*/Version: ${VERSION_PART}/" /tmp/elara-essentials.ctl && \
+    sed -i "s/^Version:.*/Version: ${VERSION_PART}/" /tmp/elara-essentials && \
     # Replace any distribution placeholder
-    sed -i "s/DIST_PLACEHOLDER/$DEBIAN_DIST/g" /tmp/elara-essentials.ctl || true
+    sed -i "s/DIST_PLACEHOLDER/$DEBIAN_DIST/g" /tmp/elara-essentials || true
 
 RUN equivs-build /tmp/elara-essentials
 
-RUN PACKAGE_NAME=$(grep ^Package: /tmp/elara-essentials.ctl | cut -d' ' -f2) && \
+RUN PACKAGE_NAME=$(grep ^Package: /tmp/elara-essentials | cut -d' ' -f2) && \
     VERSION_PART=${FULL_VERSION%%_amd64} && \
     mv /${PACKAGE_NAME}_${VERSION_PART}.deb /essentials_${FULL_VERSION}.deb
