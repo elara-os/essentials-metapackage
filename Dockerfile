@@ -24,4 +24,4 @@ RUN equivs-build /tmp/elara-essentials
 
 RUN PACKAGE_NAME=$(grep ^Package: /tmp/elara-essentials | cut -d' ' -f2) && \
     VERSION_PART=${FULL_VERSION%%_amd64} && \
-    mv /${PACKAGE_NAME}_${BUILD_VERSION}.deb /essentials_${FULL_VERSION}.deb
+    mv /${PACKAGE_NAME}_${BUILD_VERSION}_amd64.deb /essentials_${FULL_VERSION}.deb
