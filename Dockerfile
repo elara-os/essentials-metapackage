@@ -16,7 +16,7 @@ COPY src/elara-essentials /tmp/elara-essentials
 
 RUN VERSION_PART=${FULL_VERSION%%_amd64} && \
     # Update the Version field in the control file
-    sed -i "s/^Version:.*/Version: ${VERSION_PART}/" /tmp/elara-essentials && \
+    sed -i "s/^Version:.*/Version: ${BUILD_VERSION}/" /tmp/elara-essentials && \
     # Replace any distribution placeholder
     sed -i "s/DIST_PLACEHOLDER/$DEBIAN_DIST/g" /tmp/elara-essentials || true
 
