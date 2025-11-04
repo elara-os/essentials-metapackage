@@ -1,0 +1,8 @@
+Package: elara-essentials
+Version: 01
+Maintainer: Josh Mangiola <contact@elaraos.com>
+Architecture: amd64
+Depends: labwc,
+ waybar
+Description: elaraOS Essential Packages
+ Essential packages required for running elaraOS  

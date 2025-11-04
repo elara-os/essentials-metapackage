@@ -1,0 +1,40 @@
+name: Build Elara Essentials Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-package:
+    name: Build Essentials Package (${{ matrix.dist }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dist: [trixie, forky, sid] # The distributions to iterate over
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Package Version
+        id: version_vars
+        run: |
+          PACKAGE_VERSION=$(echo ${{ github.ref_name }} | sed 's/^v//')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          echo "Extracted package version: $PACKAGE_VERSION"
+
+      - name: Make build script executable
+        run: chmod +x ./build.sh
+
+      - name: Build Package
+        run: ./build.sh ${{ env.PACKAGE_VERSION }} ${{ matrix.dist }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: essentials-deb-${{ matrix.dist }}
+          path: essentials_*.deb
