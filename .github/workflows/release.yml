@@ -33,22 +33,5 @@ jobs:
       - name: Build Package
         run: ./build.sh ${{ env.PACKAGE_VERSION }} ${{ matrix.dist }}
 
-      - name: Upload an Asset in GitHub Release
-        uses: "actions/github-script@v6"
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          script: |
-            const fs = require('fs').promises;
-            await github.rest.repos.uploadReleaseAsset({
-              name: 'essentials_${env.PACKAGE_VERSION}+${matrix.dist}_amd64.deb',
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: ${{ env.RELEASE_ID }},
-              data: await fs.readFile('./essentials_${env.PACKAGE_VERSION}+${matrix.dist}_amd64.deb')  # The file to upload.
-            });
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: essentials-deb-${{ matrix.dist }}
-          path: essentials_*.deb
+      - name: Upload deb to GitHub Release
+        run: gh release upload ${{ github.ref_name }} "./essentials_${{ env.PACKAGE_VERSION }}+${{ matrix.dist }}_amd64.deb
